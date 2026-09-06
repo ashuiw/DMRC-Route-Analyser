@@ -41,19 +41,19 @@ def build_graphs(stop_times, trip_to_route):
         trips[trip_id].append((stop_id, sequence))
 
     for trip_id, stops in trips.items():
-        stops.sort()
+        stops.sort(key=lambda stop: stop[1])
         route_id = trip_to_route.get(trip_id)
         for i in range(
             len(stops) - 1
         ):
-            current_stops = stops[i][1]
-            next_stop = stops[1 + 1][1]
+            current_stop = stops[i][0]
+            next_stop = stops[i + 1][0]
             connection = {
                 "to": next_stop,
                 "route": route_id
             }
 
-            graph[current_stops].append(connection)
+            graph[current_stop].append(connection)
     return graph
 
 def make_graph_bidirectional(graph):
